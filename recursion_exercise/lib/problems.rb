@@ -114,24 +114,12 @@ end
 #     2-dimensional array: [['some data']]
 #     3-dimensional array: [[['some data']]]
 def flatten(data)
-    return [data] if !data.is_a?(Array)
+    return [data] if !data.instance_of?(Array)
 
-    data.each_with_index do |sub, i|
-        if sub.is_a?(Array)
-            sub.each do |ele|
-                shifted = data.shift(ele)
-                if data.shift(ele) == nil || !data.shift(ele).is_a?(Array)
-                    return
-                else
-                    data.unshift(shifted)
-                end
-            end
-        else
-            next
-        end
-        data.delete_at(i)
-    end
+    flattened = Array.new
+    
+    data.each {|ele| flattened += flatten(ele)}
 
-    flatten(data)
+    flattened
 
 end
